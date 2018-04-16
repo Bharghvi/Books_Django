@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+<style media="screen">
+#main {
+  /* width: 400px;
+  height: 100px; */
+  /* border: 1px solid #c3c3c3; */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  flex-wrap : wrap;
+}
+
+#main div {
+    /* -webkit-flex-grow: 0; /* Safari 6.1+ */
+    -webkit-flex-shrink: 0; /* Safari 6.1+ */
+    -webkit-flex-basis: 50px; /* Safari 6.1+ */
+    /* margin-bottom: 20px; */
+    margin-left: 10px;
+    margin-right: 10px;
+    /* flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 100px; */
+}
+
+img {
+  width: 80px;
+  height: 120px;
+}
+
+.na {
+  height: 80px;
+  width: 120px;
+}
+
+</style>
+
+{% endblock %}
+{% block content %}
+<div class="high">
+<br>
+<br>
+<br>
+<div id="main">
+{% for val in data %}
+{% if val.atc == 'Y' %}
+<div style="margin-bottom: 30px">
+<div class="na"><h5>{{ val.name }}</h5>
+<h6>{{ val.author }}</h6>
+</div>
+<img src="{{ val.image }}" alt="">
+<h6>Rs. {{ val.price }}</h6>
+<h6>Discount: {{ val.discount }}&#37;</h6>
+<form class="" action="" method="post">{% csrf_token %}
+  <button type="submit" onclick='rmv({{ val.bid }})' class="btn btn-danger" name="button">Remove</button>
+</form>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+{% url 'cart' as checkout %}
+<h4>Total payable (after calculating discount): {{ total }}</h4>
+<br>
+<h4>Payment Method</h4>
+
+<!-- <form class="thForm" action="" method="post"> -->
+  <!-- {% csrf_token %} -->
+  <br>
+  <select class="sel" name="pay">
+  <option value="cash">Cash</option>
+    <option value="dc">Debit Card</option>
+    <option value="cc">Credit Card</option>
+  </select>
+  <br>
+  <br>
+  Address(max 60 words): <input type="text" name="address" id="address"/>
+  <br>
+  <br><br>
+  <div class="cardHere"></div>
+  <br><br>
+  <input type="submit" name="price" value="Proceed to Pay" class="btn btn-success" onclick="func({{ total }})"/>
+</div>
+<!-- </form> -->
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+ <script src="http://malsup.github.com/jquery.form.js"></script>
+<script type="text/javascript">
+
+$('.sel').blur(function () {
+  if($('.sel option:selected').val() == "dc" || $('.sel option:selected').val() == 'cc')
+    $('.cardHere').append("<form style='font-weight: bold'>Card Number  <input type='text' maxlength='16' minlength='16' id='card'></input> <br/><br/> Expiration (MM/YY)  <input type='text' maxlength='5'/> <br><br> CVV <input type='text' maxlength='3'/></form>")
+  else {
+    $('.cardHere').html("<span></span>");
+  }
+})
+
+function func(total){
+  // if ($('#card').val().length !== 16){
+  //   alert("Invalid card Number!")
+  // }
+  address = $('#address').val();
+  payment = 'N'
+  if($('.sel option:selected').val() == "dc" || $('.sel option:selected').val() == 'cc')
+    payment = 'Y'
+  $.ajax({
+    url: '/payment/',
+    type: 'POST',
+    data : {
+        'csrfmiddlewaretoken' : "{{  csrf_token  }}",
+        total : total,
+        payment : payment,
+        address: address,
+    },
+    success : function(data) {
+      if (data.msg == 'Y') {
+        $('.high').html("<br><br><h1>Thank You for your Order! It will be shipped to you within 7 working days</h1>")
+      }
+      else{
+        $('.high').html("<br><br><h1>Thank You for your Order! It will be shipped to you within 7 working days. Please pay "+data.total+" by cash.</h1>")
+      }
+    },
+    error : function(data, info){
+      console.log(info);
+      // window.location.href = "{% url 'home' %}";
+    }
+  })
+}
+
+function rmv(id){
+  $.ajax({
+    url: 'cartRemove/',
+    type: 'POST',
+    data : {
+        'csrfmiddlewaretoken' : "{{  csrf_token  }}",
+        id : id,
+    },
+    success : function(result) {}
+  })
+}
+
+</script>
+{% endblock %}

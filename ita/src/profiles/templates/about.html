@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style media="screen">
+#main {
+  /* width: 400px;
+  height: 100px; */
+  /* border: 1px solid #c3c3c3; */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  flex-wrap : wrap;
+}
+
+#main div {
+    text-align: center;
+    /* -webkit-flex-grow: 0; /* Safari 6.1+ */
+    -webkit-flex-shrink: 0; /* Safari 6.1+ */
+    -webkit-flex-basis: 50px; /* Safari 6.1+ */
+    /* margin-bottom: 20px; */
+    margin-left: 20px;
+    margin-right: 20px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 230px;
+}
+
+.main {
+  /* width: 400px;
+  height: 100px; */
+  /* border: 1px solid #c3c3c3; */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  flex-wrap : wrap;
+}
+
+.main div {
+    text-align: center;
+    /* -webkit-flex-grow: 0; /* Safari 6.1+ */
+    -webkit-flex-shrink: 0; /* Safari 6.1+ */
+    -webkit-flex-basis: 50px; /* Safari 6.1+ */
+    /* margin-bottom: 20px; */
+    margin-left: 20px;
+    margin-right: 20px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 500px;
+}
+  .jumbotron {
+    text-align: center;
+  }
+
+  i{
+    font-size: 100px;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<h1 class="jumbotron">Why sell on 'Books for You'?</h1>
+<div id="main">
+  <div class="tag">
+    <i class="fa fa-group fa-5x" style="text-align:center;"></i>
+    <p>Crores of customers across the world</p>
+  </div>
+  <div class="tag">
+      <i class="fa fa-money fa-5x" style="text-align:center;"></i>
+    <p>No fixed cost. Have your flexibility.</p>
+  </div>
+  <div class="tag">
+      <i class="fa fa-lock fa-5x" style="text-align:center;"></i>
+    <p>Secure payments</p>
+  </div>
+  <div class="tag">
+      <i class="fa fa-smile-o fa-5x" style="text-align:center;"></i>
+    <p>Trust of service</p>
+  </div>
+</div>
+<br>
+<br>
+<div class="main">
+  <div class="tags">
+    <h3>Sell as Individual</h3>
+    <p>Start you personal Selling virtual shop with Books For You.</p>
+  </div>
+  <div class="tags">
+    <h3>Sell as Business</h3>
+    <p>Improve your business by involving online consumers to peer into your collection.</p>
+  </div>
+</div>
+{% endblock %}

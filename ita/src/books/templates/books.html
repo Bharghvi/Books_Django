@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block styles %}
+<style media="screen">
+#myDIV {
+    width: 100%;
+    padding: 50px 0;
+    text-align: center;
+    background-color: lightblue;
+    margin-top: 20px;
+    display: none;
+}
+#main {
+  /* width: 400px;
+  height: 100px; */
+  /* border: 1px solid #c3c3c3; */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  flex-wrap : wrap;
+}
+
+/* .hi {
+
+    border: 1px solid #c3c3c3;
+} */
+
+#main div {
+
+    /* -webkit-flex-grow: 0; /* Safari 6.1+ */
+    -webkit-flex-shrink: 0; /* Safari 6.1+ */
+    -webkit-flex-basis: 50px; /* Safari 6.1+ */
+    /* margin-bottom: 20px; */
+    margin-left: 20px;
+    margin-right: 20px;
+    /* flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: 100px; */
+}
+
+img {
+  width: 180px;
+  height: 280px;
+}
+
+.na {
+  height: 120px;
+  width: 180px;
+}
+
+</style>
+
+{% endblock %}
+{% block content %}
+<br>
+<br>
+<br>
+<div id="main">
+{% for val in data %}
+<div style="margin-bottom: 30px" class="hi">
+<div class="na"><h3>{{ val.name }}</h3>
+<h5>{{ val.author }}</h5>
+</div>
+<img src="{{ val.image }}" alt="">
+<h6>Rs. {{ val.price }}</h6>
+<h6>Discount: {{ val.discount }}&#37;</h6>
+<button type="button" class="btn btn-success" name="button" id="tog" onclick="myFunction({{ val.bid }})">Detail</button>
+<p id="togg"></p>
+<button type="submit" class="btn btn-primary" onclick='func({{ val.bid }})' name="button">Add to Cart</button>
+</div>
+{% endfor %}
+</div>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+
+function func(id){
+  $.ajax({
+    url: 'cartChange/',
+    type: 'POST',
+    data : {
+        'csrfmiddlewaretoken' : "{{  csrf_token  }}",
+        id : id,
+    },
+    success : function(result) {
+      alert("Added to cart!")
+    }
+  })
+}
+
+function myFunction(id) {
+  $.ajax({
+    url: 'related/',
+    type: 'POST',
+    data : {
+        'csrfmiddlewaretoken' : "{{  csrf_token  }}",
+        id : id,
+    },
+    success : function(result) {
+      // $('this').text(result.msg)
+      alert(result.msg)
+    }
+  })
+}
+
+
+</script>
+{% endblock %}
